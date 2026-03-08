@@ -6,16 +6,16 @@ const cors = require('cors');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 let items = [
-    {id: nanoid(6), name: "Iphone", price: 70000, description: "Прекрасный айфон", category: "Электроника", stock: 5},
-    {id: nanoid(6), name: "Zphone", price: 100000, description: "Непрекрасный айфон", category: "Электроника", stock: 10},
-    {id: nanoid(6), name: "Poco", price: 1000000, description: "Бомбовый телефон", category: "Электроника", stock: 10},
-    {id: nanoid(6), name: "4K", price: 120000, description: "Пушечный монитор с феноменальны разрешением", category: "Электроника", stock: 7},
-    {id: nanoid(6), name: "Iphone", price: 70000, description: "Прекрасный айфон", category: "Электроника", stock: 5},
-    {id: nanoid(6), name: "Zphone", price: 100000, description: "Непрекрасный айфон", category: "Электроника", stock: 10},
-    {id: nanoid(6), name: "Poco", price: 1000000, description: "Бомбовый телефон", category: "Электроника", stock: 10},
-    {id: nanoid(6), name: "4K", price: 120000, description: "Пушечный монитор с феноменальны разрешением", category: "Электроника", stock: 7},
-    {id: nanoid(6), name: "Iphone", price: 70000, description: "Прекрасный айфон", category: "Электроника", stock: 5},
-    {id: nanoid(6), name: "Zphone", price: 100000, description: "Непрекрасный айфон", category: "Электроника", stock: 10},
+    {id: nanoid(6), name: "Iphone", price: 70000, description: "Прекрасный айфон", category: "Электроника", stock: 5, imageUrl: "https://m.media-amazon.com/images/I/71cdtM6hgmL._AC_SL1500_.jpg"},
+    {id: nanoid(6), name: "Zphone", price: 100000, description: "Непрекрасный айфон", category: "Электроника", stock: 10, imageUrl: "https://static.rustore.ru/imgproxy/bsUJWPrNGbjLS3L2Mg5wwev1581RkYPfMJ7XoeURkPc/rs:fit:3136:1760/g:so/dpr:2/plain/https://static.rustore.ru/rustore-strapi/9/784h440_max_messages_75dd3904e9.webp@webp"},
+    {id: nanoid(6), name: "Poco", price: 1000000, description: "Бомбовый телефон", category: "Электроника", stock: 10, imageUrl: "https://cdn.citilink.ru/18iRXgDmMst-74T5XOB_nK_V3LRdqiogA6v4agl1Qhc/resizing_type:fit/gravity:sm/width:400/height:400/plain/product-images/48ec82b1-0562-4678-b470-dd2a1fae4025.jpg"},
+    {id: nanoid(6), name: "Монитор 4K", price: 120000, description: "Пушечный монитор с феноменальны разрешением", category: "Электроника", stock: 7, imageUrl: "https://cdn.4k-monitors.ru/upload/resize_cache/iblock/f37/700_700_1/f379ce636e4b9b8de5c2826159ab4319.jpg"},
+    {id: nanoid(6), name: "Airpods pro", price: 70000, description: "Невероятные наушники", category: "Электроника", stock: 5, imageUrl: "https://cifra39.com/wa-data/public/shop/products/81/44/4481/images/13603/x13603.970.jpg.pagespeed.ic.zd6V9cpRMp.jpg"},
+    {id: nanoid(6), name: "Макбук M4", price: 100000, description: "Анбеливебельный макбук", category: "Электроника", stock: 10, imageUrl: "https://my-apple-store.ru/wa-data/public/shop/products/64/11/21164/images/53353/53353.970.jpg"},
+    {id: nanoid(6), name: "Рация", price: 1000000, description: "Средство связи будущего", category: "Электроника", stock: 10, imageUrl: "https://image.kazanexpress.ru/d0ip6if90u9lu92d0gn0/t_product_high.jpg"},
+    {id: nanoid(6), name: "Ipod", price: 120000, description: "Плеер без блюра", category: "Электроника", stock: 7, imageUrl: "https://personal-audio.ru/upload/iblock/3b8/apple_ipod_touch_silver_01.png"},
+    {id: nanoid(6), name: "Мышь Суперигровая", price: 70000, description: "Прекрасная мышь с игровой подсветкой", category: "Электроника", stock: 5, imageUrl: "https://image.kazanexpress.ru/cqaf7s1j08h724h4qj1g/t_product_high.jpg"},
+    {id: nanoid(6), name: "Ipad", price: 100000, description: "Большой Айфон", category: "Электроника", stock: 10, imageUrl: "https://cifra39.com/wa-data/public/shop/products/07/60/6007/images/19512/19512.970.jpg"}
 ]
 
 //middleware для парсинга json
@@ -69,6 +69,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
  *       required:
  *         - name
  *         - price
+ *         - category
+ *         - description
+ *         - imageUrl
  *         - stock
  *       properties:
  *         id:
@@ -89,6 +92,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
  *         description:
  *           type: string
  *           description: Описание товара
+ *         imageUrl:
+ *           type: string
+ *           description: Url изображения товара
  *       example:
  *         id: "abc123"
  *         name: "Maxphone"
@@ -96,6 +102,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
  *         stock: 1
  *         category: "Электроника"
  *         description: "Отличный товар"
+ *         imageUrl: "https://example.com/image.jpg"
  */
 
 //функция помощник для получения пользователя из списка
@@ -126,7 +133,10 @@ function findItemOr404(id, res) {
  *             required:
  *               - name
  *               - price
+ *               - category
+ *               - description
  *               - stock
+ *               - imageUrl
  *             properties:
  *               name:
  *                 type: string
@@ -137,6 +147,8 @@ function findItemOr404(id, res) {
  *               category:
  *                 type: string
  *               description:
+ *                 type: string
+ *               imageUrl:
  *                 type: string
  *     responses:
  *       201:
@@ -149,8 +161,8 @@ function findItemOr404(id, res) {
  *         description: Ошибка в теле запроса
  */
 app.post('/api/items', (req, res) => {
-    const {name, category, description, price, stock} = req.body;
-    if (!name || !price || stock === undefined){
+    const {name, category, description, price, stock, imageUrl} = req.body;
+    if (!name || price === undefined || stock === undefined){
         return res.status(400).json({
             error: "Имя или цена обязательные, остаток тоже, хоть 0"
         })
@@ -158,8 +170,9 @@ app.post('/api/items', (req, res) => {
     const newItem = {
         id: nanoid(6),
         name: name.trim(),
-        category: category.trim(),
-        description: description.trim(),
+        category: category != null ? String(category).trim() : "",
+        description: description != null ? String(description).trim() : "",
+        imageUrl: imageUrl != null ? String(imageUrl).trim() : "",
         price: Number(price),
         stock: Number(stock)
     };
@@ -249,6 +262,8 @@ app.get("/api/items/:id", (req, res) => {
  *                 type: string
  *               description:
  *                 type: string
+ *               imageUrl:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Обновленный товар
@@ -267,17 +282,18 @@ app.patch('/api/items/:id', (req, res) => {
     if (!item) return;
 
     //Нельзя patch без полей
-    if (req.body?.name === undefined && req.body?.price === undefined && req.body?.description === undefined && req.body?.category === undefined && req.body?.stock === undefined) {
+    if (req.body?.name === undefined && req.body?.price === undefined && req.body?.description === undefined && req.body?.category === undefined && req.body?.stock === undefined && req.body?.imageUrl === undefined) {
         res.status(404).json({
             error: 'Обновить нечего, сори'
         })
     }
-    const {name, description, category, stock, price,} = req.body;
+    const {name, description, category, stock, price, imageUrl} = req.body;
     if (name !== undefined) item.name = name.trim();
-    if (description !== undefined) item.description = description.trim();
-    if (category !== undefined) item.category = category.trim();
+    if (description !== undefined) item.description = String(description).trim();
+    if (category !== undefined) item.category = String(category).trim();
     if (stock !== undefined) item.stock = Number(stock);
     if (price !== undefined) item.price = Number(price);
+    if (imageUrl !== undefined) item.imageUrl = String(imageUrl).trim();
     res.json(item);
 });
 

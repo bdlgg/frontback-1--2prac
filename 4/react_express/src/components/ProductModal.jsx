@@ -6,6 +6,7 @@ export default function ProductModal({ open, mode, initialItem, onClose, onSubmi
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
     const [stock, setStock ] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
 
     useEffect(() => {
         if (!open) return;
@@ -14,6 +15,7 @@ export default function ProductModal({ open, mode, initialItem, onClose, onSubmi
         setDescription(initialItem?.description ?? "");
         setCategory(initialItem?.category ?? "");
         setStock(initialItem?.stock !=null ? String(initialItem.stock) : "");
+        setImageUrl(initialItem?.imageUrl ?? "");
     }, [open, mode, initialItem]);
 
     if (!open) return null;
@@ -41,6 +43,7 @@ export default function ProductModal({ open, mode, initialItem, onClose, onSubmi
             name: trimmedName,
             category: category.trim(),
             description: description.trim(),
+            imageUrl: imageUrl.trim(),
             price: parsedPrice,
             stock: parsedStock,
         });
@@ -64,6 +67,11 @@ export default function ProductModal({ open, mode, initialItem, onClose, onSubmi
                     <label className="label">
                         Описание
                         <input className="input" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Краткое описание"  />
+                    </label>
+                    <label className="label">
+                        URL изображения
+                        <input className="input" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://site.com/photo.jpg"
+                        />
                     </label>
                     <label className="label">
                         Цена (₽)
