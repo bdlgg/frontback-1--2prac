@@ -4,8 +4,14 @@ const bcrypt = require("bcrypt");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 const app = express();
 const port = 3000;
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-refresh-token"],
+}));
 const JWT_SECRET = "access_secret"
 const ACCESS_EXPIRES_IN = "15m"
 const REFRESH_SECRET = "refresh_secret"
